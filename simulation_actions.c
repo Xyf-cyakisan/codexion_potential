@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/28 13:28:15 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/05 23:16:55 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/05 23:51:14 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_bool	compile_sleep(t_coder *coder)
 
 static void	compile(t_coder *coder, uint64_t time_start_of_simu)
 {
-	if (check_if_coder_can_compile(coder) == FALSE)
+	if (check_if_first(coder) == FALSE)
 		return ;
 	pthread_mutex_lock(&coder->dongle_1->mutex);
 	pthread_mutex_lock(&coder->dongle_2->mutex);
@@ -53,9 +53,7 @@ static void	compile(t_coder *coder, uint64_t time_start_of_simu)
 	print_log("is compiling\n", time_start_of_simu, coder, FALSE);
 	if (compile_sleep(coder) == FALSE)
 		return ;
-	pthread_mutex_lock(&coder->nb_comp);
-	coder->required_compilations--;
-	pthread_mutex_unlock(&coder->nb_comp);
+	update_required_compilations(coder);
 	update_dongle_cooldown(coder);
 	pthread_mutex_unlock(&coder->dongle_1->mutex);
 	pthread_mutex_unlock(&coder->dongle_2->mutex);

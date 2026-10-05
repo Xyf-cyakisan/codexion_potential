@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/17 16:14:03 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/05 16:26:46 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/05 23:53:47 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ void		print_log(char *log, uint64_t time_start_of_simu,
 				t_coder *coder, t_bool burnout);
 t_bool		check_dongles_cooldowns(t_coder *coder);
 void		update_dongle_cooldown(t_coder *coder);
+t_bool		check_if_first(t_coder *coder);
 t_bool		check_if_coder_can_compile(t_coder *coder);
+void		update_required_compilations(t_coder *coder);
 t_bool		simulation_is_stopped(t_coder *coder);
 t_bool		simulation_is_started(t_coder *coder);
 int			get_required_compilations(t_coder *coder);

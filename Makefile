@@ -12,6 +12,7 @@ FILES = codexion.c \
 	   heap_utils.c \
 	   simulation_utils.c \
 	   simulation_utils2.c \
+	   simulation_utils3.c \
 	   simulation_actions.c \
 	   monitoring.c \
 	   simulation.c \
