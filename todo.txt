@@ -1,0 +1,7 @@
+check si ton monitoring fait le taf et que si y'a besoin que la derniere ligne ecrite soit forcement le burnout
+mettre des fonctions statiques
+check si tu geres bien tous les cas avec ton parsing et que le burnout force doit etre gere ou pas
+check si c'est bien securise et free partout et si y'a des messages d'errerurs quand il faut
+check si tout est bien respecte dans le sujet
+check des cas plus extremes
+norminette et leaks
