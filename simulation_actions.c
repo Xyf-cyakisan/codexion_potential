@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/28 13:28:15 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/06 14:49:02 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/06 15:09:36 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,6 @@ void	coder_act(t_coder *coder, uint64_t time_start_of_simu,
 		debug(coder, time_start_of_simu);
 	else if (coder->status == REFACTORING)
 		refactor(coder, time_start_of_simu);
-	coder->status = get_next_step(coder->status);
+	if (coder->nb_coders != 1)
+		coder->status = get_next_step(coder->status);
 }
