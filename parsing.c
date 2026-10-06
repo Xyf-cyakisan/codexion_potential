@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/17 16:10:34 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/05 22:19:46 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/06 13:28:42 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,26 +103,29 @@ static void	set_values(t_simulation *simulation,
 
 t_bool	create_objects(t_simulation *simulation, t_config config)
 {
-	int				nb_dongle;
-
 	simulation->coders = NULL;
 	simulation->dongles = NULL;
 	if (pthread_mutex_init(&simulation->log_mutex, NULL) != 0)
 		return (FALSE);
 	if (pthread_mutex_init(&simulation->state_mutex, NULL) != 0)
 		return (pthread_mutex_destroy(&simulation->log_mutex), FALSE);
+	if (pthread_cond_init(&simulation->cond, NULL) != 0
+		|| pthread_mutex_init(&simulation->cond_mutex, NULL) != 0)
+		return (pthread_mutex_destroy(&simulation->log_mutex),
+			pthread_mutex_destroy(&simulation->state_mutex),
+			pthread_cond_destroy(&simulation->cond), FALSE);
 	simulation->nb_coders = config.nb_coders;
 	simulation->coders = ft_calloc(config.nb_coders, sizeof(t_coder));
 	if (!simulation->coders)
 		return (pthread_mutex_destroy(&simulation->state_mutex),
 			pthread_mutex_destroy(&simulation->log_mutex), FALSE);
-	nb_dongle = config.nb_coders;
-	simulation->dongles = ft_calloc(nb_dongle, sizeof(t_dongle));
+	simulation->dongles = ft_calloc(config.nb_coders, sizeof(t_dongle));
 	if (!simulation->dongles)
 		return (clean_base_objects(simulation),
 			pthread_mutex_destroy(&simulation->state_mutex),
 			pthread_mutex_destroy(&simulation->log_mutex), FALSE);
-	set_values(simulation, config, nb_dongle);
+	set_values(simulation, config, config.nb_coders);
+	set_other_values(simulation, config.nb_coders);
 	set_monitor_values(simulation, &simulation->monitor);
 	return (TRUE);
 }

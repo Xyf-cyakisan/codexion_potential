@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/22 14:41:17 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/05 17:02:39 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/06 13:00:20 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void	*run_single_simulation(void *arg)
 	t_request	request;
 
 	coder = arg;
+	ft_bzero(&request, sizeof(t_request));
 	while (simulation_is_started(coder) == FALSE)
 		usleep(1000);
 	required_comps_beg = get_required_compilations(coder);

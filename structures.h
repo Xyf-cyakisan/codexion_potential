@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 14:07:05 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/05 17:18:42 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/06 13:24:43 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ typedef struct s_coder
 	t_bool			*stop;
 	pthread_mutex_t	compile_mutex;
 	pthread_mutex_t	nb_comp;
+	pthread_cond_t	*cond;
+	pthread_mutex_t	*cond_mutex;
 	int				nb_coders;
 }	t_coder;
 
@@ -107,6 +109,8 @@ typedef struct s_monitor
 	pthread_mutex_t	*state_mutex;
 	int				nb_coders;
 	t_bool			*simu_started;
+	pthread_cond_t	*cond;
+	pthread_mutex_t	*cond_mutex;
 }	t_monitor;
 
 typedef struct s_simulation
@@ -116,6 +120,8 @@ typedef struct s_simulation
 	int				nb_coders;
 	pthread_mutex_t	log_mutex;
 	pthread_mutex_t	state_mutex;
+	pthread_cond_t	cond;
+	pthread_mutex_t	cond_mutex;
 	t_monitor		monitor;
 	t_bool			stop;
 	t_bool			simu_started;

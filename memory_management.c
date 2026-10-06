@@ -6,14 +6,14 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 14:12:16 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/05 17:14:54 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/06 13:29:57 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "general_utils.h"
 #include "memory_management.h"
 
-static void	ft_bzero(void *s, size_t n)
+void	ft_bzero(void *s, size_t n)
 {
 	unsigned int	i;
 	unsigned char	*temp;
@@ -63,6 +63,8 @@ void	clean_mutexes(t_simulation *simu)
 		pthread_mutex_destroy(&simu->coders[i].nb_comp);
 		++i;
 	}
+	pthread_cond_destroy(&simu->cond);
+	pthread_mutex_destroy(&simu->cond_mutex);
 	pthread_mutex_destroy(&simu->state_mutex);
 	pthread_mutex_destroy(&simu->log_mutex);
 }

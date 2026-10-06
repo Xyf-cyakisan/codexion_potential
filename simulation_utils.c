@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/28 13:53:53 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/05 23:48:08 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/06 14:36:35 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,35 +40,8 @@ void	print_log(char *log, uint64_t time_start_of_simu,
 	pthread_mutex_unlock(coder->log_mutex);
 }
 
-t_bool	check_dongles_cooldowns(t_coder *coder)
-{
-	uint64_t	current_time;
-
-	current_time = true_get_time_of_day();
-	if (coder->dongle_1->last_usage
-		+ coder->dongle_1->dongle_cd <= current_time
-		&& coder->dongle_2->last_usage
-		+ coder->dongle_2->dongle_cd <= current_time)
-		return (TRUE);
-	else
-		return (FALSE);
-}
-
 void	update_dongle_cooldown(t_coder *coder)
 {
 	coder->dongle_1->last_usage = true_get_time_of_day();
 	coder->dongle_2->last_usage = coder->dongle_1->last_usage;
-}
-
-t_bool	check_if_coder_can_compile(t_coder *coder)
-{
-	if (check_dongles_cooldowns(coder) == FALSE
-		|| simulation_is_stopped(coder) == TRUE)
-	{
-		pthread_mutex_unlock(&coder->dongle_2->mutex);
-		pthread_mutex_unlock(&coder->dongle_1->mutex);
-		return (FALSE);
-	}
-	else
-		return (TRUE);
 }
