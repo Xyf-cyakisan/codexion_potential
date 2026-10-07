@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/14 15:26:54 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/09/25 17:36:14 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/07 13:06:09 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_bool	ft_check_number_validity(char *str, int arg_index)
 	size_t	i;
 
 	i = 0;
-	if (!str)
+	if (!str || str[0] == '\0')
 		return (display_error(ERR_EMPTY_STR, 2, 0), FALSE);
 	while (str[i] != '\0')
 	{

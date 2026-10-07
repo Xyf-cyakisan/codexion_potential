@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/28 13:53:53 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/06 14:36:35 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/07 14:27:26 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_status	get_next_step(t_status current_step)
 }
 
 void	print_log(char *log, uint64_t time_start_of_simu,
-	t_coder *coder, t_bool burnout)
+	t_coder *coder)
 {
 	pthread_mutex_lock(coder->log_mutex);
 	if (simulation_is_stopped(coder) == TRUE)
@@ -35,8 +35,6 @@ void	print_log(char *log, uint64_t time_start_of_simu,
 			- time_start_of_simu));
 	printf("%d ", coder->id);
 	printf("%s", log);
-	if (burnout == TRUE)
-		stop_simulation(coder);
 	pthread_mutex_unlock(coder->log_mutex);
 }
 

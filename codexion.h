@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/17 16:14:03 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/07 12:15:04 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/07 16:07:07 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,13 @@ void		heap_add_back(t_heap *heap, t_request request);
 void		heap_pop(t_heap *heap);
 t_status	get_next_step(t_status current_step);
 void		print_log(char *log, uint64_t time_start_of_simu,
-				t_coder *coder, t_bool burnout);
+				t_coder *coder);
+void		print_compile_log(t_coder *coder, uint64_t time_start_of_simu);
+void		print_burnout_log(char *log, uint64_t time_start_of_simu,
+				t_coder *coder);
 void		update_dongle_cooldown(t_coder *coder);
 t_bool		check_if_first(t_coder *coder);
+t_bool		update_last_compile(t_coder *coder);
 void		update_required_compilations(t_coder *coder);
 t_bool		simulation_is_stopped(t_coder *coder);
 t_bool		simulation_is_started(t_coder *coder);

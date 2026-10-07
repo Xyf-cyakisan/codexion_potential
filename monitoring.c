@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/01 14:24:43 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/06 14:41:11 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/07 14:30:01 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ static void	check_all_deadlines(t_monitor *monitor)
 		if (last_compile
 			+ monitor->coders[i].time_burnout <= true_get_time_of_day())
 		{
+			stop_simulation(&monitor->coders[i]);
 			cond_broadcast(monitor->cond, monitor->cond_mutex);
-			print_log("burned out\n",
-				get_time_start_of_simulation(&monitor->coders[i]),
-				&monitor->coders[i], TRUE);
+			print_burnout_log("burned out\n", get_time_start_of_simulation(
+					&monitor->coders[i]), &monitor->coders[i]);
 			return ;
 		}
 	}
