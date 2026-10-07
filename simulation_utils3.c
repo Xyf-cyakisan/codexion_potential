@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 23:47:05 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/06 14:45:11 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/07 12:31:21 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,24 @@ t_bool	wait_for_cond(t_coder *coder)
 	if (simulation_is_stopped(coder) == TRUE)
 		return (FALSE);
 	return (TRUE);
+}
+
+void	wait_for_dongle_cd(t_coder *coder)
+{
+	uint64_t	current_time;
+	t_dongle	*dongle;
+
+	current_time = true_get_time_of_day();
+	if (coder->dongle_1->dongle_cd + coder->dongle_1->last_usage <= current_time
+		&& coder->dongle_2->dongle_cd
+		+ coder->dongle_2->last_usage <= current_time)
+		return ;
+	if (coder->dongle_1->dongle_cd + coder->dongle_1->last_usage
+		> coder->dongle_2->dongle_cd
+		+ coder->dongle_2->last_usage)
+		dongle = coder->dongle_1;
+	else
+		dongle = coder->dongle_2;
+	usleep((dongle->dongle_cd
+			- (current_time - dongle->last_usage)) * 1000);
 }

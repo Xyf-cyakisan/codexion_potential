@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/28 13:28:15 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/06 15:09:36 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/07 12:18:47 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ static void	compile(t_coder *coder, uint64_t time_start_of_simu)
 		return ;
 	pthread_mutex_lock(&coder->dongle_1->mutex);
 	pthread_mutex_lock(&coder->dongle_2->mutex);
-	if (coder->dongle_1->last_usage != 0)
-		usleep(coder->dongle_1->dongle_cd * 1000);
+	wait_for_dongle_cd(coder);
 	pthread_mutex_lock(&coder->dongle_1->heap.heap_mutex);
 	pthread_mutex_lock(&coder->dongle_2->heap.heap_mutex);
 	heap_pop(&coder->dongle_1->heap);
