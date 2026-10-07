@@ -6,13 +6,13 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/28 13:28:15 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/07 16:33:31 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/07 17:36:29 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-static t_bool	thread_sleep(t_coder *coder)
+t_bool	thread_sleep(t_coder *coder)
 {
 	uint64_t	end_time;
 	t_bool		appro_time;
@@ -46,19 +46,8 @@ static void	compile(t_coder *coder, uint64_t time_start_of_simu)
 	heap_pop(&coder->dongle_2->heap);
 	pthread_mutex_unlock(&coder->dongle_2->heap.heap_mutex);
 	pthread_mutex_unlock(&coder->dongle_1->heap.heap_mutex);
-	if (update_last_compile(coder) == FALSE)
-	{
-		pthread_mutex_unlock(&coder->dongle_1->mutex);
-		pthread_mutex_unlock(&coder->dongle_2->mutex);
+	if (real_compile(coder, time_start_of_simu) == FALSE)
 		return ;
-	}
-	print_compile_log(coder, time_start_of_simu);
-	if (thread_sleep(coder) == FALSE)
-	{
-		pthread_mutex_unlock(&coder->dongle_1->mutex);
-		pthread_mutex_unlock(&coder->dongle_2->mutex);
-		return ;
-	}
 	update_required_compilations(coder);
 	update_dongle_cooldown(coder);
 	pthread_mutex_unlock(&coder->dongle_1->mutex);

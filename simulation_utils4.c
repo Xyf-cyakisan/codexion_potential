@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/07 12:59:15 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/07 16:30:38 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/07 17:37:57 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,22 @@ void	print_burnout_log(char *log, uint64_t time_start_of_simu,
 	printf("%d ", coder->id);
 	printf("%s", log);
 	pthread_mutex_unlock(coder->log_mutex);
+}
+
+t_bool	real_compile(t_coder *coder, uint64_t time_start_of_simu)
+{
+	if (update_last_compile(coder) == FALSE)
+	{
+		pthread_mutex_unlock(&coder->dongle_1->mutex);
+		pthread_mutex_unlock(&coder->dongle_2->mutex);
+		return (FALSE);
+	}
+	print_compile_log(coder, time_start_of_simu);
+	if (thread_sleep(coder) == FALSE)
+	{
+		pthread_mutex_unlock(&coder->dongle_1->mutex);
+		pthread_mutex_unlock(&coder->dongle_2->mutex);
+		return (FALSE);
+	}
+	return (TRUE);
 }
