@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/07 12:59:15 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/08 13:02:50 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 15:34:25 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static t_bool	update_last_compile(t_coder *coder)
 {
 	uint64_t	last_compile;
+	uint64_t	current_time;
 
 	pthread_mutex_lock(&coder->compile_mutex);
 	if (simulation_is_stopped(coder) == TRUE)
@@ -25,12 +26,13 @@ static t_bool	update_last_compile(t_coder *coder)
 	last_compile = coder->last_compile;
 	if (last_compile == 0)
 		last_compile = get_time_start_of_simulation(coder);
-	if (last_compile + coder->time_burnout <= true_get_time_of_day())
+	current_time = true_get_time_of_day();
+	if (last_compile + coder->time_burnout <= current_time)
 	{
 		pthread_mutex_unlock(&coder->compile_mutex);
 		return (FALSE);
 	}
-	coder->last_compile = true_get_time_of_day();
+	coder->last_compile = current_time;
 	pthread_mutex_unlock(&coder->compile_mutex);
 	return (TRUE);
 }

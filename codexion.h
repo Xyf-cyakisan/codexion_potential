@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/17 16:14:03 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/08 13:28:09 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 15:02:59 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ t_bool		coder_act(t_coder *coder, uint64_t time_start_of_simu,
 				int required_comps_beg, t_request request);
 void		*monitor(void *arg);
 void		init_simulation(t_simulation *simulation);
+void		true_init_mutexes(t_simulation *simu, int *i);
+void		destroy_partial_mutexes(t_simulation *simu, int count);
 t_bool		run_whole_simulation(t_simulation *simulation);
 
 #endif

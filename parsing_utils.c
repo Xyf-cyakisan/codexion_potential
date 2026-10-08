@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/14 15:26:54 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/07 13:06:09 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 15:03:22 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	ft_atoi(const char *nptr, int arg_index)
 	i = 0;
 	result = 0;
 	if (ft_strlen(nptr) >= 11)
-		return (display_error(ERR_BIGGER_INT_MAX, 5, arg_index), FALSE);
+		return (display_error(ERR_BIGGER_INT_MAX,
+				5, arg_index), FALSE);
 	while (nptr[i] != '\0')
 	{
 		result = result * 10 + (nptr[i] - '0');
