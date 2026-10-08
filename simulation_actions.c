@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/28 13:28:15 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/08 19:01:50 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 19:31:05 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ static t_bool	compile(t_coder *coder, uint64_t time_start_of_simu)
 	pthread_mutex_lock(&coder->dongle_1->mutex);
 	pthread_mutex_lock(&coder->dongle_2->mutex);
 	if (deal_with_dongle_cd(coder) == FALSE)
+	{
+		pthread_mutex_unlock(&coder->dongle_1->mutex);
+		pthread_mutex_unlock(&coder->dongle_2->mutex);
 		return (FALSE);
+	}
 	pthread_mutex_lock(&coder->dongle_1->heap.heap_mutex);
 	pthread_mutex_lock(&coder->dongle_2->heap.heap_mutex);
 	heap_pop(&coder->dongle_1->heap);
