@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/17 16:14:03 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/08 15:02:59 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 17:01:18 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void		cond_broadcast(pthread_cond_t *cond, pthread_mutex_t *cond_mutex);
 int			get_required_compilations(t_coder *coder);
 uint64_t	get_time_start_of_simulation(t_coder *coder);
 void		stop_simulation(t_coder *coder);
-void		wait_for_dongle_cd(t_coder *coder);
 t_bool		wait_for_cond(t_coder *coder);
 t_bool		thread_sleep(t_coder *coder, uint64_t end_time);
 t_bool		real_compile(t_coder *coder, uint64_t time_start_of_simu);

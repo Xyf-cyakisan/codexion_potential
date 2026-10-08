@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 23:47:05 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/08 13:02:29 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 17:01:12 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,7 @@ void	cond_broadcast(pthread_cond_t *cond, pthread_mutex_t *cond_mutex)
 	pthread_mutex_unlock(cond_mutex);
 }
 
-t_bool	wait_for_cond(t_coder *coder)
-{
-	pthread_mutex_lock(coder->cond_mutex);
-	while (check_if_first(coder) == FALSE
-		&& simulation_is_stopped(coder) == FALSE)
-		pthread_cond_wait(coder->cond, coder->cond_mutex);
-	pthread_mutex_unlock(coder->cond_mutex);
-	if (simulation_is_stopped(coder) == TRUE)
-		return (FALSE);
-	return (TRUE);
-}
-
-void	wait_for_dongle_cd(t_coder *coder)
+static void	wait_for_dongle_cd(t_coder *coder)
 {
 	uint64_t	current_time;
 	t_dongle	*dongle;
@@ -73,4 +61,17 @@ void	wait_for_dongle_cd(t_coder *coder)
 	if (thread_sleep(coder, (dongle->dongle_cd
 				- (current_time - dongle->last_usage) + current_time)) == FALSE)
 		return ;
+}
+
+t_bool	wait_for_cond(t_coder *coder)
+{
+	pthread_mutex_lock(coder->cond_mutex);
+	while (check_if_first(coder) == FALSE
+		&& simulation_is_stopped(coder) == FALSE)
+		pthread_cond_wait(coder->cond, coder->cond_mutex);
+	pthread_mutex_unlock(coder->cond_mutex);
+	if (simulation_is_stopped(coder) == TRUE)
+		return (FALSE);
+	wait_for_dongle_cd(coder);
+	return (TRUE);
 }
