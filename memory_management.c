@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 14:12:16 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/06 13:29:57 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 13:18:58 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 void	clean_base_objects(t_simulation *simulation)
 {
-	free(simulation->coders);
-	free(simulation->dongles);
+	if (simulation->coders)
+		free(simulation->coders);
+	if (simulation->dongles)
+		free(simulation->dongles);
 	simulation->coders = NULL;
 	simulation->dongles = NULL;
 }

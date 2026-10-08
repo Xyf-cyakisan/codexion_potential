@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/01 14:24:43 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/07 14:30:01 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 13:51:07 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ void	*monitor(void *arg)
 
 	monitor = arg;
 	while (simulation_is_started(&monitor->coders[0]) == FALSE)
-		usleep(1000);
+		usleep(1);
 	while (simulation_is_stopped(&monitor->coders[0]) == FALSE)
 	{
 		check_all_deadlines(monitor);
-		usleep(1000);
+		usleep(1);
 	}
 	return (NULL);
 }

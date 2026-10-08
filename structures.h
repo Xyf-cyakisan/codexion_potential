@@ -6,7 +6,7 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 14:07:05 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/06 13:24:43 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 14:40:35 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define ERR_REQUIRED_COMP "Number of compiles required must be greater than 0"
 # define ERR_MUTEX_INIT "Mutexes initialization failed"
 # define ERR_THREADS_INIT "Threads initialization failed"
-# define ERR_EMPTY_NODE_HEAP "NULL node encountered"
+
 # define TRUE 1
 # define FALSE -1
 

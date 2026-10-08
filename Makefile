@@ -2,7 +2,7 @@
 
 NAME= codexion
 OBJ_DIR = Objects
-FILES = codexion.c \
+C_FILES = codexion.c \
 	   general_utils.c \
 	   memory_management.c \
 	   memory_management2.c \
@@ -19,12 +19,18 @@ FILES = codexion.c \
 	   simulation.c \
 	   simulation2.c
 
-OBJS = $(FILES:%.c=$(OBJ_DIR)/%.o)
+H_FILES = general_utils.h \
+		parsing.h \
+		structures.h \
+		memory_management.h \
+		codexion.h
+
+OBJS = $(C_FILES:%.c=$(OBJ_DIR)/%.o)
 
 $(NAME): $(OBJS)
 	cc -Wall -Wextra -Werror -pthread $(OBJS) -o $(NAME)
 
-$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: %.c $(H_FILES) | $(OBJ_DIR)
 	cc -Wall -Wextra -Werror -pthread -c $< -o $@
 
 $(OBJ_DIR):

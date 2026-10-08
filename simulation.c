@@ -6,13 +6,13 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/22 14:41:17 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/06 13:00:20 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 14:35:35 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-static t_bool	init_mutexes(t_simulation *simu)
+static t_bool	init_dongle_mutexes(t_simulation *simu)
 {
 	int	i;
 
@@ -51,8 +51,17 @@ static void	*run_single_simulation(void *arg)
 	required_comps_beg = get_required_compilations(coder);
 	while (get_required_compilations(coder) != 0
 		&& simulation_is_stopped(coder) == FALSE)
-		coder_act(coder, get_time_start_of_simulation(coder),
-			required_comps_beg, request);
+	{
+		if (coder->nb_coders == 1)
+			usleep(1000);
+		else
+		{
+			if (coder_act(coder, get_time_start_of_simulation(coder),
+					required_comps_beg, request) == FALSE)
+				break ;
+			coder->status = get_next_step(coder->status);
+		}
+	}
 	return (NULL);
 }
 
@@ -106,7 +115,7 @@ static void	set_heaps_beginning(t_simulation *simulation)
 t_bool	run_whole_simulation(t_simulation *simulation)
 {
 	set_heaps_beginning(simulation);
-	if (init_mutexes(simulation) == FALSE
+	if (init_dongle_mutexes(simulation) == FALSE
 		|| init_threads(simulation) == FALSE)
 		return (clean_base_objects(simulation), FALSE);
 	return (TRUE);

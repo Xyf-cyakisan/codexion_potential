@@ -6,13 +6,13 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 23:47:05 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/07 12:31:21 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 13:02:29 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-t_bool	check_if_first(t_coder *coder)
+static t_bool	check_if_first(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->dongle_1->heap.heap_mutex);
 	pthread_mutex_lock(&coder->dongle_2->heap.heap_mutex);
@@ -70,6 +70,7 @@ void	wait_for_dongle_cd(t_coder *coder)
 		dongle = coder->dongle_1;
 	else
 		dongle = coder->dongle_2;
-	usleep((dongle->dongle_cd
-			- (current_time - dongle->last_usage)) * 1000);
+	if (thread_sleep(coder, (dongle->dongle_cd
+				- (current_time - dongle->last_usage) + current_time)) == FALSE)
+		return ;
 }

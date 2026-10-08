@@ -6,24 +6,14 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/28 13:28:15 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/07 17:36:29 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 13:50:36 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-t_bool	thread_sleep(t_coder *coder)
+t_bool	thread_sleep(t_coder *coder, uint64_t end_time)
 {
-	uint64_t	end_time;
-	t_bool		appro_time;
-
-	if (coder->status == COMPILING)
-		appro_time = coder->time_compile;
-	else if (coder->status == DEBUGING)
-		appro_time = coder->time_debug;
-	else
-		appro_time = coder->time_refactor;
-	end_time = true_get_time_of_day() + appro_time;
 	while (true_get_time_of_day() < end_time)
 	{
 		usleep(100);
@@ -33,10 +23,10 @@ t_bool	thread_sleep(t_coder *coder)
 	return (TRUE);
 }
 
-static void	compile(t_coder *coder, uint64_t time_start_of_simu)
+static t_bool	compile(t_coder *coder, uint64_t time_start_of_simu)
 {
 	if (wait_for_cond(coder) == FALSE)
-		return ;
+		return (FALSE);
 	pthread_mutex_lock(&coder->dongle_1->mutex);
 	pthread_mutex_lock(&coder->dongle_2->mutex);
 	wait_for_dongle_cd(coder);
@@ -47,34 +37,37 @@ static void	compile(t_coder *coder, uint64_t time_start_of_simu)
 	pthread_mutex_unlock(&coder->dongle_2->heap.heap_mutex);
 	pthread_mutex_unlock(&coder->dongle_1->heap.heap_mutex);
 	if (real_compile(coder, time_start_of_simu) == FALSE)
-		return ;
+		return (FALSE);
 	update_required_compilations(coder);
 	update_dongle_cooldown(coder);
 	pthread_mutex_unlock(&coder->dongle_1->mutex);
 	pthread_mutex_unlock(&coder->dongle_2->mutex);
 	cond_broadcast(coder->cond, coder->cond_mutex);
+	return (TRUE);
 }
 
-static void	debug(t_coder *coder, uint64_t time_start_of_simu)
+static t_bool	debug(t_coder *coder, uint64_t time_start_of_simu)
 {
 	print_log("is debugging\n", time_start_of_simu, coder);
-	if (thread_sleep(coder) == FALSE)
-		return ;
+	if (thread_sleep(coder,
+			true_get_time_of_day() + coder->time_debug) == FALSE)
+		return (FALSE);
+	return (TRUE);
 }
 
-static void	refactor(t_coder *coder, uint64_t time_start_of_simu)
+static t_bool	refactor(t_coder *coder, uint64_t time_start_of_simu)
 {
 	print_log("is refactoring\n", time_start_of_simu, coder);
-	if (thread_sleep(coder) == FALSE)
-		return ;
+	if (thread_sleep(coder,
+			true_get_time_of_day() + coder->time_refactor) == FALSE)
+		return (FALSE);
+	return (TRUE);
 }
 
-void	coder_act(t_coder *coder, uint64_t time_start_of_simu,
+t_bool	coder_act(t_coder *coder, uint64_t time_start_of_simu,
 			int required_comps_beg, t_request request)
 {
-	if (coder->nb_coders == 1)
-		usleep(1000);
-	else if (coder->status == COMPILING)
+	if (coder->status == COMPILING)
 	{
 		if (required_comps_beg > get_required_compilations(coder))
 		{
@@ -86,12 +79,14 @@ void	coder_act(t_coder *coder, uint64_t time_start_of_simu,
 			pthread_mutex_unlock(&coder->dongle_1->heap.heap_mutex);
 			pthread_mutex_unlock(&coder->dongle_2->heap.heap_mutex);
 		}
-		compile(coder, time_start_of_simu);
+		if (compile(coder, time_start_of_simu) == FALSE)
+			return (FALSE);
 	}
-	else if (coder->status == DEBUGING)
-		debug(coder, time_start_of_simu);
-	else if (coder->status == REFACTORING)
-		refactor(coder, time_start_of_simu);
-	if (coder->nb_coders != 1)
-		coder->status = get_next_step(coder->status);
+	else if (coder->status == DEBUGING
+		&& debug(coder, time_start_of_simu) == FALSE)
+		return (FALSE);
+	else if (coder->status == REFACTORING
+		&& refactor(coder, time_start_of_simu) == FALSE)
+		return (FALSE);
+	return (TRUE);
 }

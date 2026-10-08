@@ -6,13 +6,13 @@
 /*   By: cyakisan <cyakisan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/07 12:59:15 by cyakisan          #+#    #+#             */
-/*   Updated: 2026/10/07 17:37:57 by cyakisan         ###   ########.fr       */
+/*   Updated: 2026/10/08 13:02:50 by cyakisan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-t_bool	update_last_compile(t_coder *coder)
+static t_bool	update_last_compile(t_coder *coder)
 {
 	uint64_t	last_compile;
 
@@ -35,7 +35,7 @@ t_bool	update_last_compile(t_coder *coder)
 	return (TRUE);
 }
 
-void	print_compile_log(t_coder *coder, uint64_t time_start_of_simu)
+static void	print_compile_log(t_coder *coder, uint64_t time_start_of_simu)
 {
 	pthread_mutex_lock(coder->log_mutex);
 	if (simulation_is_stopped(coder) == TRUE)
@@ -78,7 +78,8 @@ t_bool	real_compile(t_coder *coder, uint64_t time_start_of_simu)
 		return (FALSE);
 	}
 	print_compile_log(coder, time_start_of_simu);
-	if (thread_sleep(coder) == FALSE)
+	if (thread_sleep(coder,
+			true_get_time_of_day() + coder->time_compile) == FALSE)
 	{
 		pthread_mutex_unlock(&coder->dongle_1->mutex);
 		pthread_mutex_unlock(&coder->dongle_2->mutex);
